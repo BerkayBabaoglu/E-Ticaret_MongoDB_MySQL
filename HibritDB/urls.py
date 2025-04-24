@@ -4,9 +4,14 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'), #anasayfa icin index.html yonlendirmesi , http://127.0.0.1:8000/
-    path('header.html', views.header, name='header'),
-    path('slider.html', views.slider, name='slider'),
-    path('content.html', views.content, name='content'),
-    path('footer.html', views.footer, name='footer'),
+    path('', views.index, name = 'home'), #anasayfa icin index.html yonlendirmesi , http://127.0.0.1:8000/
+    path('header.html', views.header),
+    path('slider.html', views.slider),
+    path('content.html', views.content),
+    path('footer.html', views.footer),
+    path('clothing/',views.clothing, name = 'clothing'),
+    path('accessories/',views.accessories, name = 'accessories'),
+    path('cart/',views.cart, name = 'cart'),
+    path('about/',views.about, name = 'about'),
+    path('contact/', views.contact, name='contact'),
 ]

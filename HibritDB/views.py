@@ -14,3 +14,18 @@ def content(request):
 
 def footer(request):
     return render(request, 'footer.html')
+
+def clothing(request):
+    return render(request, 'clothing.html')
+
+def accessories(request):
+    return render(request,'accessories.html')
+
+def cart(request):
+    return render(request, 'cart.html')
+
+def about(request):
+    return render(request,'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
