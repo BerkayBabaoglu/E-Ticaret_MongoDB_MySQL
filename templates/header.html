@@ -3,45 +3,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HEADER | E-COMMERCE WEBSITE</title>
-
-    <!-- favicon -->
     <link rel="icon" href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo" type="image/gif" sizes="16x16">
-
-    <!-- EXTERNAL LINKS -->
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <script src="https://kit.fontawesome.com/4a3b1f73a2.js"></script>
+    <script src="https://kit.fontawesome.com/4a3b1f73a2.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <section>
-            <!-- MAIN CONTAINER -->
-            <div id="container">
-                <!-- SHOP NAME -->
-                <div id="shopName"><a href="{% url 'home' %}"><b>SHOP</b>LANE</a></div>
+    <section>
+        <div id="container">
+            <div id="shopName">
+                <a href="{% url 'home' %}"><b>SHOP</b>LANE</a>
+            </div>
 
-                <!-- COLLECTIONS ON WEBSITE -->
-                <div id="collection">
-                    <div id="clothing"><a href="{% url 'clothing' %}">CLOTHING</a></div>
-                    <div id="accessories"><a href="{% url 'accessories' %}">ACCESSORIES</a></div>
-                </div>
+            <div id="collection">
+                <div id="clothing"><a href="{% url 'clothing' %}">CLOTHING</a></div>
+                <div id="accessories"><a href="{% url 'accessories' %}">ACCESSORIES</a></div>
+            </div>
 
-                <!-- SEARCH SECTION -->
-                <div id="search">
-                    <i class="fas fa-search search"></i>
-                    <input type="text" id="input" name="searchBox" placeholder="Search for Clothing and Accessories">
-                </div>
+            <div id="search">
+                <i class="fas fa-search search"></i>
+                <input type="text" id="input" name="searchBox" placeholder="Search for Clothing and Accessories">
+            </div>
 
-                <!-- USER SECTION (CART AND USER ICON) -->
-                <div id="user">
-                    <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart addedToCart"><div id="badge">0</div></i></a>
-                    <a href="#"><i class="fas fa-user-circle userIcon"></i></a>
-                </div> 
-            </div> 
-        </section>
-    </header>
+            <div id="user">
+                <a href="{% url 'cart' %}">
+                    <div style="position: relative;">
+                        <i class="fas fa-shopping-cart addedToCart"></i>
+                        <div id="badge">0</div>
+                    </div>
+                </a>
+                <a href="#" id="openAuthModal">
+                    <i class="fas fa-user-circle userIcon"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+</header>
+
+<!-- Modal Login/Register -->
+<div id="authModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <div class="tabs">
+            <button class="tab-button active" data-tab="login">Login</button>
+            <button class="tab-button" data-tab="register">Register</button>
+        </div>
+        <div id="login" class="tab active">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <label><input type="checkbox" name="remember"> Remember me</label>
+                <button type="submit">Login</button>
+                <a href="{% url 'password_reset' %}">Forgot your password?</a>
+            </form>
+        </div>
+        <div id="register" class="tab">
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password1" placeholder="Password" required>
+                <input type="password" name="password2" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Script -->
+<script>
+    const modal = document.getElementById("authModal");
+    const openModalBtn = document.getElementById("openAuthModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabs = document.querySelectorAll(".tab");
+
+    openModalBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        modal.style.display = "flex";
+    });
+
+    closeModalBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    tabButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            tabButtons.forEach(b => b.classList.remove("active"));
+            tabs.forEach(t => t.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+    });
+</script>
 </body>
 </html>

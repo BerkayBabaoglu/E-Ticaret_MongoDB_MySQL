@@ -6,23 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>E-COMMERCE WEBSITE | Created by Priyanka Sharma</title>
-    
-    <!-- favicon -->
+
     <link rel="icon" href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo" type="image/gif" sizes="16x16">
-    
-    <!-- FontAwesome ve Google Fonts -->
-    <script src="https://kit.fontawesome.com/4a3b1f73a2.js"></script>
+
+    <!-- Font & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
 
-    <!-- Slick slider CSS -->
+    <!-- Slick Carousel -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
 
-    <!-- Özel CSS -->
-    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
 </head>
-
 <body>
+
     <!-- HEADER -->
     {% include 'header.html' %}
 
@@ -32,16 +31,14 @@
     <!-- CONTENT SECTION -->
     {% include 'content.html' %}
 
-     FOOTER -->
+    <!-- FOOTER -->
     {% include 'footer.html' %}
 
-    <!-- jQuery -->
+    <!-- Scripts -->
     <script src="{% static 'js/jQuery3.4.1.js' %}"></script>
-
-    <!-- Slick JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#containerSlider').slick({
                 dots: true,
                 infinite: true,
@@ -52,8 +49,6 @@
             });
         });
     </script>
-
-    <!-- Özel JS -->
     <script src="{% static 'js/content.js' %}"></script>
 </body>
 </html>
