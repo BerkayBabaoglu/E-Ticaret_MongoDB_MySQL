@@ -1,13 +1,11 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from pyexpat.errors import messages
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.hashers import make_password, check_password
+from .models import User  # MySQL'deki tabloya bağladığın model
 
 def index(request):
-    return render(request, 'index.html') #templateddeki index.html cekiyo
+    return render(request, 'index.html')
 
 def header(request):
     return render(request, 'header.html')
@@ -25,43 +23,53 @@ def clothing(request):
     return render(request, 'clothing.html')
 
 def accessories(request):
-    return render(request,'accessories.html')
+    return render(request, 'accessories.html')
 
 def cart(request):
     return render(request, 'cart.html')
 
 def about(request):
-    return render(request,'about.html')
+    return render(request, 'about.html')
 
 def contact(request):
     return render(request, 'contact.html')
 
 def signup(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Bu e-posta zaten kayıtlı.')
             return redirect('signup')
-        user = User.objects.create_user(username, password=password)
-        user.save()
-        messages.success(request, 'User created successfully')
+
+        # Rolü sabit olarak 'customer' atıyoruz
+        user = User.objects.create_user(email=email, username=username, password=password, role='customer')
+        messages.success(request, 'Kayıt başarılı! Giriş yapabilirsiniz.')
         return redirect('signin')
-    return render(request,'signup.html')
+
+    return render(request, 'signup.html')
+
 
 def signin(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect('home')
+            if user.role == 'supplier':
+                return redirect('supplier_dashboard')
+            else:
+                return redirect('customer_home')
         else:
-            messages.error(request, 'Invalid username or password')
-            return redirect('signup')
-    return render(request,'signin.html')
+            messages.error(request, 'Giriş başarısız. Bilgileri kontrol edin.')
+            return redirect('signin')
+    return render(request, 'index.html')
 
 def logout_view(request):
-    logout(request)
+    request.session.flush()
+    messages.success(request, 'Başarıyla çıkış yaptınız.')
     return redirect('signin')
