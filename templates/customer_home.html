@@ -21,10 +21,16 @@
     <link rel="stylesheet" href="{% static 'css/header2.css' %}">
 </head>
 <body>
-
+    
     <!-- HEADER -->
     {% include 'header2.html' %}
-
+    
+    {% if user.is_authenticated %}
+        <h2>Giriş Yapıldı: {{ user.username }}</h2>
+    {% else %}
+        <h2>Giriş Yapılmadı</h2>
+    {% endif %}
+    
     <!-- SLIDER -->
     {% include 'slider.html' %}
 
@@ -33,6 +39,9 @@
 
     <!-- FOOTER -->
     {% include 'footer.html' %}
+    
+    
+    
 
     <!-- Scripts -->
     <script src="{% static 'js/jQuery3.4.1.js' %}"></script>
@@ -47,6 +56,8 @@
                 autoplay: true,
                 autoplaySpeed: 1500,
             });
+            
+            
         });
     </script>
     <script src="{% static 'js/content.js' %}"></script>

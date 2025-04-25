@@ -67,6 +67,7 @@ DATABASES = { #Mysql bilgilerimi girmem gerek
     }
 }
 
+AUTH_USER_MODEL = 'HibritDB.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

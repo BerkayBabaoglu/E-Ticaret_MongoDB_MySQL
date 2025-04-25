@@ -57,56 +57,50 @@
 
 <!-- JavaScript to toggle dropdown -->
 <script>
-    $(document).ready(function () {
-        // Kullanıcı adının üzerine tıklandığında dropdown menüyü göster
-        $('#user-name').click(function () {
-            $('#dropdown-content').toggleClass('show');
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+        const userName = document.getElementById("user-name");
 
-        // Eğer dışarıya tıklanırsa dropdown menüyü kapat
-        $(window).click(function (event) {
-            if (!$(event.target).closest('.dropdown').length) {
-                $('#dropdown-content').removeClass('show');
-            }
-        });
+        if (userName) {
+            const dropdown = userName.closest(".dropdown");
+
+            userName.addEventListener("click", function (event) {
+                event.stopPropagation(); // Başka tıklamaları etkilemesin
+                dropdown.classList.toggle("show");
+            });
+
+            // Sayfanın başka yerlerine tıklanınca menüyü kapat
+            document.addEventListener("click", function (event) {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove("show");
+                }
+            });
+        }
     });
 </script>
 
 <!-- CSS for Dropdown -->
 <style>
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
+    /* dropdown-content başlangıçta gizli */
     .dropdown-content {
-		display: none;
-		position: absolute;
-		background-color: #f9f9f9;
-		min-width: 160px;
-		z-index: 1;
-		box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-		padding: 10px;
-		border-radius: 5px;
-	}
-
-	.dropdown-content a {
-		color: black;
-		padding: 12px 16px;
-		text-decoration: none;
-		display: block;
-	}	
-
-    .dropdown-content a:hover {
-		background-color: #ddd;
-	}
-
-    /* Show the dropdown when it is clicked */
-    .dropdown .show {
-		display: block;
-	}
-
-    #user-name {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        min-width: 160px;
+        z-index: 1;
+        right: 0;
+        padding: 10px;
+        border-radius: 6px;
+    }
+    
+    /* Açıldığında göster */
+    .dropdown.show .dropdown-content {
+        display: block;
+    }
+    
+    /* Kullanıcı ismi üzerine stil */
+    .user-name {
+        color: gray;
         cursor: pointer;
         font-weight: bold;
     }

@@ -27,6 +27,7 @@ class User(AbstractBaseUser):
     musteri_mi = models.BooleanField(default=False)  # Yeni sütun eklendi
     last_login = models.DateTimeField(null=True, blank=True)  # last_login alanı ekleniyor
 
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
