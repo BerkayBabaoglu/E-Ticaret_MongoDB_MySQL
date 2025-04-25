@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import check_password
 from .models import User  # MySQL'deki tabloya bağladığın model
+
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 def index(request):
     return render(request, 'index.html')
@@ -44,32 +47,53 @@ def signup(request):
             messages.error(request, 'Bu e-posta zaten kayıtlı.')
             return redirect('signup')
 
-        # Rolü sabit olarak 'customer' atıyoruz
+        # Şifreyi düz metin olarak kaydediyoruz
         user = User.objects.create_user(email=email, username=username, password=password, role='customer')
         messages.success(request, 'Kayıt başarılı! Giriş yapabilirsiniz.')
         return redirect('signin')
 
     return render(request, 'signup.html')
 
-
 def signin(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
 
-        if user is not None:
-            login(request, user)
-            if user.role == 'supplier':
-                return redirect('supplier_dashboard')
-            else:
-                return redirect('customer_home')
-        else:
-            messages.error(request, 'Giriş başarısız. Bilgileri kontrol edin.')
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            messages.error(request, "Bu username ile kayıtlı bir hesap bulunamadı.")
             return redirect('signin')
-    return render(request, 'index.html')
+
+        # Düz metin şifre karşılaştırması yapıyoruz
+        if password == user.password:  # Şifreyi düz metin olarak karşılaştırıyoruz
+            login(request, user)
+            messages.success(request, "Başarıyla giriş yaptınız.")
+            return redirect('customer_home')  # Başarıyla giriş yaptıktan sonra index sayfasına yönlendir
+        else:
+            messages.error(request, "E-posta veya şifre yanlış.")
+            return redirect('signin')
+
+    return render(request, 'signin.html')
 
 def logout_view(request):
     request.session.flush()
     messages.success(request, 'Başarıyla çıkış yaptınız.')
-    return redirect('signin')
+    return redirect('index')
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Kullanıcının oturumunu güncelle
+            return redirect('customer_home')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {'form': form})
+
+def customer_home(request):
+    # your view logic here
+    return render(request, 'customer_home.html')

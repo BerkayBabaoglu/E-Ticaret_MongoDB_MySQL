@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HEADER | E-COMMERCE WEBSITE</title>
+    <link rel="icon" href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <script src="https://kit.fontawesome.com/4a3b1f73a2.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+    <section>
+        <div id="container">
+            <div id="shopName">
+                <a href="{% url 'home' %}"><b>SHOP</b>LANE</a>
+            </div>
+
+            <div id="collection">
+                <div id="clothing"><a href="{% url 'clothing' %}">CLOTHING</a></div>
+                <div id="accessories"><a href="{% url 'accessories' %}">ACCESSORIES</a></div>
+            </div>
+
+            <div id="search">
+                <i class="fas fa-search search"></i>
+                <input type="text" id="input" name="searchBox" placeholder="Search for Clothing and Accessories">
+            </div>
+
+            <div id="user">
+                <a href="{% url 'cart' %}">
+                    <div style="position: relative;">
+                        <i class="fas fa-shopping-cart addedToCart"></i>
+                        <div id="badge">0</div>
+                    </div>
+                </a>
+
+                <!-- User Dropdown Menu -->
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <span class="user-name" id="user-name">{{ user.username }}</span>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a href="{% url 'change_password' %}">Şifre Değiştir</a>
+                            <a href="{% url 'logout' %}">Çıkış Yap</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="#" id="openAuthModal">
+                        <i class="fas fa-user-circle userIcon"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</header>
+
+<!-- JavaScript to toggle dropdown -->
+<script>
+    $(document).ready(function () {
+        // Kullanıcı adının üzerine tıklandığında dropdown menüyü göster
+        $('#user-name').click(function () {
+            $('#dropdown-content').toggleClass('show');
+        });
+
+        // Eğer dışarıya tıklanırsa dropdown menüyü kapat
+        $(window).click(function (event) {
+            if (!$(event.target).closest('.dropdown').length) {
+                $('#dropdown-content').removeClass('show');
+            }
+        });
+    });
+</script>
+
+<!-- CSS for Dropdown -->
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f9f9f9;
+		min-width: 160px;
+		z-index: 1;
+		box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+		padding: 10px;
+		border-radius: 5px;
+	}
+
+	.dropdown-content a {
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+	}	
+
+    .dropdown-content a:hover {
+		background-color: #ddd;
+	}
+
+    /* Show the dropdown when it is clicked */
+    .dropdown .show {
+		display: block;
+	}
+
+    #user-name {
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+
+</body>
+</html>
