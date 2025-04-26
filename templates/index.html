@@ -19,22 +19,75 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .messages p {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .minimal-home {
+            background: white;
+            padding: 40px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            text-align: center;
+            margin-top: 40px;
+        }
+        .minimal-home h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .minimal-home p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-
-    <!-- HEADER -->
     {% include 'header.html' %}
-
-    <!-- SLIDER -->
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="minimal-home">
+            <h1>E-Ticaret Sitesine Hoş Geldiniz</h1>
+            <p>Giriş ve diğer işlemler için sağ üstteki kullanıcı ikonunu kullanabilirsiniz.</p>
+        </div>
+    </div>
     {% include 'slider.html' %}
-
-    <!-- CONTENT SECTION -->
     {% include 'content.html' %}
-
-    <!-- FOOTER -->
     {% include 'footer.html' %}
-
-    <!-- Scripts -->
     <script src="{% static 'js/jQuery3.4.1.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <script>

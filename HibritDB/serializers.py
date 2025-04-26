@@ -57,6 +57,7 @@ class TokenSerializer(serializers.Serializer):
                 'user_id': user.id,
                 'username': user.username,
                 'email': user.email,
+                'role': user.role,
                 'exp': datetime.utcnow() + timedelta(days=1),
                 'iat': datetime.utcnow(),
             }
@@ -69,6 +70,7 @@ class TokenSerializer(serializers.Serializer):
             # Refresh token oluştur
             refresh_token_payload = {
                 'user_id': user.id,
+                'role': user.role,
                 'exp': datetime.utcnow() + timedelta(days=7),
                 'iat': datetime.utcnow(),
             }
@@ -83,5 +85,6 @@ class TokenSerializer(serializers.Serializer):
                 'access': access_token,
                 'user_id': user.id,
                 'username': user.username,
+                'role': user.role,
             }
         raise serializers.ValidationError("E-posta veya şifre yanlış.")

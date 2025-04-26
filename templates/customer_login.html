@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Müşteri Girişi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            padding: 30px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .messages {
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .role-switch {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 style="text-align: center;">Müşteri Girişi</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Kullanıcı Adı" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Şifre" required>
+            </div>
+            <button type="submit">Giriş Yap</button>
+        </form>
+
+        <div class="role-switch">
+            <p>Henüz hesabınız yok mu? <a href="{% url 'customer_signup' %}">Kayıt Ol</a></p>
+            <p>Tedarikçi misiniz? <a href="{% url 'supplier_login' %}">Tedarikçi Girişi</a></p>
+        </div>
+    </div>
+</body>
+</html> 

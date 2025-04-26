@@ -13,6 +13,8 @@ from .serializers import TokenSerializer, ChangePasswordSerializer
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
+from .permissions import IsCustomer, IsSupplier, IsAdmin
+
 def index(request):
     return render(request, 'index.html')
 
@@ -56,7 +58,7 @@ def signin(request):
         if is_correct:
             login(request, user)
             messages.success(request, "Başarıyla giriş yaptınız.")
-            return redirect('customer_home')
+            return redirect('index')
         else:
             messages.error(request, "Kullanıcı adı veya şifre yanlış.")
             return redirect('signin')
@@ -109,7 +111,20 @@ def change_password(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def customer_home(request):
+    if not request.user.is_authenticated:
+        return redirect('customer_login')
+    if request.user.role != 'customer':
+        messages.error(request, "Bu sayfaya sadece müşteriler erişebilir.")
+        return redirect('customer_login')
     return render(request, 'customer_home.html')
+
+def supplier_home(request):
+    if not request.user.is_authenticated:
+        return redirect('supplier_login')
+    if request.user.role != 'supplier':
+        messages.error(request, "Bu sayfaya sadece tedarikçiler erişebilir.")
+        return redirect('supplier_login')
+    return render(request, 'supplier_home.html')
 
 @api_view(['POST'])
 def protected_view(request):
@@ -148,3 +163,99 @@ def obtain_token(request):
     if serializer.is_valid():
         return Response(serializer.validated_data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsCustomer])
+def customer_only_view(request):
+    return Response({"message": "Bu endpoint'e sadece müşteriler erişebilir."})
+
+@api_view(['GET'])
+@permission_classes([IsSupplier])
+def supplier_only_view(request):
+    return Response({"message": "Bu endpoint'e sadece tedarikçiler erişebilir."})
+
+@api_view(['GET'])
+@permission_classes([IsAdmin])
+def admin_only_view(request):
+    return Response({"message": "Bu endpoint'e sadece adminler erişebilir."})
+
+@api_view(['GET'])
+@permission_classes([IsCustomer | IsSupplier])
+def customer_supplier_view(request):
+    return Response({"message": "Bu endpoint'e hem müşteriler hem de tedarikçiler erişebilir."})
+
+def customer_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password').strip()
+
+        try:
+            user = User.objects.get(username=username)
+            if user.role != 'customer':
+                messages.error(request, "Bu sayfaya sadece müşteriler giriş yapabilir.")
+                return redirect('customer_login')
+
+            if user.check_password(password):
+                login(request, user)
+                messages.success(request, "Başarıyla giriş yaptınız.")
+                return redirect('customer_home')
+            else:
+                messages.error(request, "Kullanıcı adı veya şifre yanlış.")
+        except User.DoesNotExist:
+            messages.error(request, "Bu kullanıcı adı ile kayıtlı bir hesap bulunamadı.")
+
+    return render(request, 'customer_login.html')
+
+def supplier_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password').strip()
+
+        try:
+            user = User.objects.get(username=username)
+            if user.role != 'supplier':
+                messages.error(request, "Bu sayfaya sadece tedarikçiler giriş yapabilir.")
+                return redirect('supplier_login')
+
+            if user.check_password(password):
+                login(request, user)
+                messages.success(request, "Başarıyla giriş yaptınız.")
+                return redirect('supplier_home')
+            else:
+                messages.error(request, "Kullanıcı adı veya şifre yanlış.")
+        except User.DoesNotExist:
+            messages.error(request, "Bu kullanıcı adı ile kayıtlı bir hesap bulunamadı.")
+
+    return render(request, 'supplier_login.html')
+
+def customer_signup(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Bu e-posta zaten kayıtlı.')
+            return redirect('customer_signup')
+
+        user = User.objects.create_user(email=email, username=username, password=password, role='customer')
+        messages.success(request, 'Kayıt başarılı! Giriş yapabilirsiniz.')
+        return redirect('customer_login')
+
+    return render(request, 'customer_signup.html')
+
+def supplier_signup(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Bu e-posta zaten kayıtlı.')
+            return redirect('supplier_signup')
+
+        user = User.objects.create_user(email=email, username=username, password=password, role='supplier')
+        messages.success(request, 'Kayıt başarılı! Giriş yapabilirsiniz.')
+        return redirect('supplier_login')
+
+    return render(request, 'supplier_signup.html')

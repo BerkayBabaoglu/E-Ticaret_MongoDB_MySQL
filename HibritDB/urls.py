@@ -22,19 +22,26 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
 
     # Auth işlemleri
-    path('signup/', views.signup, name='signup'),
-    path('signin/', views.signin, name='signin'),
+    path('customer/login/', views.customer_login, name='customer_login'),
+    path('supplier/login/', views.supplier_login, name='supplier_login'),
+    path('customer/signup/', views.customer_signup, name='customer_signup'),
+    path('supplier/signup/', views.supplier_signup, name='supplier_signup'),
     path('logout/', views.logout_view, name='logout'),
-    path('login/', views.signin, name='login'),
-    path('register/', views.signup, name='register'),
     path('change_password/', views.change_password_html, name='change_password_html'),
     path('customer-home/', views.customer_home, name='customer_home'),
+    path('supplier-home/', views.supplier_home, name='supplier_home'),
 
     # API endpoints
     path('api/change-password/', views.change_password, name='change_password_api'),
     path('api/token/', views.obtain_token, name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/protected/', views.protected_view, name='protected'),
+    
+    # Rol bazlı endpoint'ler
+    path('api/customer-only/', views.customer_only_view, name='customer_only'),
+    path('api/supplier-only/', views.supplier_only_view, name='supplier_only'),
+    path('api/admin-only/', views.admin_only_view, name='admin_only'),
+    path('api/customer-supplier/', views.customer_supplier_view, name='customer_supplier'),
 
     # Şifre sıfırlama
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
