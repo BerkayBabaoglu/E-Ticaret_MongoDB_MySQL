@@ -6,12 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="1877f3a1-8806-4a1b-b806-860d26ef5e06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HibritDB/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HibritDB/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/customer_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customer_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/signin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/supplier_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/supplier_home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +112,8 @@
       <workItem from="1745601168570" duration="8179000" />
       <workItem from="1745618866177" duration="6488000" />
       <workItem from="1745697715291" duration="6505000" />
-      <workItem from="1745705682728" duration="960000" />
+      <workItem from="1745705682728" duration="1068000" />
+      <workItem from="1745742470820" duration="2608000" />
     </task>
     <servers />
   </component>

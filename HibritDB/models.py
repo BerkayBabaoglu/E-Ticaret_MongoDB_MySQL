@@ -31,8 +31,8 @@ class User(AbstractBaseUser):
     musteri_mi = models.BooleanField(default=False)
     last_login = models.DateTimeField(null=True, blank=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 

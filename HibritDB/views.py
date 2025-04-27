@@ -259,3 +259,13 @@ def supplier_signup(request):
         return redirect('supplier_login')
 
     return render(request, 'supplier_signup.html')
+
+def urun_ekle(request):
+    # Sadece tedarikçi girebilsin
+    if not request.user.is_authenticated or request.user.role != 'supplier':
+        messages.error(request, "Bu sayfaya sadece tedarikçiler erişebilir.")
+        return redirect('supplier_login')
+    if request.method == 'POST':
+        # Burada ürün ekleme işlemini yapabilirsiniz
+        pass
+    return render(request, 'urun_ekle.html')

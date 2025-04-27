@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ürün Ekle</title>
+</head>
+<body>
+    <h2>Ürün Ekle</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Ürün Adı:</label>
+        <input type="text" name="urun_adi" required><br><br>
+        <label>Fiyat:</label>
+        <input type="number" name="fiyat" required><br><br>
+        <button type="submit">Kaydet</button>
+    </form>
+</body>
+</html> 

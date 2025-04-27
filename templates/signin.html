@@ -1,23 +1,108 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>SIGN IN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            padding: 30px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #000;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #333;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .register-link a {
+            color: #000;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .messages {
+            color: #ff0000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Sign In</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <button type="submit">Sign In</button>
-    </form>
-    <a href="{% url 'signup' %}">Don't have an account? Sign up</a>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="form-container">
+        <h2>Giriş Yap</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Giriş Yap</button>
+        </form>
+
+        <div class="register-link">
+            Hesabınız yok mu? <a href="{% url 'signup' %}">Kayıt Olun</a>
+        </div>
+    </div>
 </body>
 </html>

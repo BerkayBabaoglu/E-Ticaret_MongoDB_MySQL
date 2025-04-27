@@ -57,18 +57,11 @@
 </head>
 <body>
     {% include 'header.html' %}
-    <div class="container">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-        <div class="minimal-home">
-            <h1>Hoş geldiniz!</h1>
-            <p>Tüm müşteri işlemlerine sağ üstteki kullanıcı menüsünden ulaşabilirsiniz.</p>
-        </div>
-    </div>
+    {% include 'slider.html' %}
+    {% include 'content.html' %}
+    {% include 'footer.html' %}
+
+    
+
 </body>
 </html>
