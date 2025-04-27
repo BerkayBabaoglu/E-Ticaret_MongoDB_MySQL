@@ -1,5 +1,6 @@
 from pathlib import Path
 import os #os ile klasor yollarini yonetmek icin
+import pymysql
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,7 +65,9 @@ WSGI_APPLICATION = 'HibritDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = { #Mysql bilgilerimi girmem gerek
+pymysql.install_as_MySQLdb()
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kullanici_sistemi',
@@ -74,6 +77,11 @@ DATABASES = { #Mysql bilgilerimi girmem gerek
         'PORT': '3306',
     }
 }
+
+# MongoDB settings
+MONGODB_DATABASE = 'hibritdb_mongodb'
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
 
 AUTH_USER_MODEL = 'HibritDB.User'
 

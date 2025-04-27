@@ -14,6 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 from .permissions import IsCustomer, IsSupplier, IsAdmin
+from HibritDB.mongodb import get_mongodb_collection
 
 def index(request):
     return render(request, 'index.html')
@@ -261,11 +262,25 @@ def supplier_signup(request):
     return render(request, 'supplier_signup.html')
 
 def urun_ekle(request):
-    # Sadece tedarikçi girebilsin
     if not request.user.is_authenticated or request.user.role != 'supplier':
         messages.error(request, "Bu sayfaya sadece tedarikçiler erişebilir.")
         return redirect('supplier_login')
     if request.method == 'POST':
-        # Burada ürün ekleme işlemini yapabilirsiniz
-        pass
+        print("POST isteği geldi!")  # DEBUG
+        print(request.POST)           # DEBUG
+        name = request.POST.get('urun_adi')
+        price = request.POST.get('fiyat')
+        if not name or not price:
+            messages.error(request, "Tüm alanları doldurun.")
+            return render(request, 'urun_ekle.html')
+        product_data = {
+            'name': name,
+            'price': float(price),
+            'supplier_id': request.user.id
+        }
+        collection = get_mongodb_collection('products')
+        result = collection.insert_one(product_data)
+        print("MongoDB Insert Result:", result.inserted_id)  # DEBUG
+        messages.success(request, "Ürün başarıyla eklendi!")
+        return redirect('supplier_home')
     return render(request, 'urun_ekle.html')
