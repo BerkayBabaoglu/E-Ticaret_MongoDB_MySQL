@@ -56,4 +56,7 @@ urlpatterns = [
     path('api/cart/', views.get_cart, name='get_cart'),
     path('api/cart/remove/<str:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('api/cart/update/<str:product_id>/', views.update_cart_item, name='update_cart_item'),
+
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('reset-password/<str:token>/', views.reset_password, name='reset_password'),
 ]

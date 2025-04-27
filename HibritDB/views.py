@@ -18,6 +18,15 @@ from HibritDB.mongodb import get_mongodb_collection
 from HibritDB.mongodb_models import Cart, Product
 import json
 from bson import ObjectId
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.utils.crypto import get_random_string
+from django.utils import timezone
+from datetime import timedelta
+from django.db import connection
+from django.urls import reverse
+from django.conf import settings
 
 def index(request):
     return render(request, 'index.html')
@@ -365,3 +374,78 @@ def update_cart_item(request, product_id):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 Cart().cart_collection.delete_many({"price": {"$type": "string"}})
+
+def create_password_reset_tokens_table():
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS password_reset_tokens (
+                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                token VARCHAR(32) UNIQUE NOT NULL,
+                created_at DATETIME NOT NULL
+            )
+        """)
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            token = get_random_string(32)
+            user.reset_password_token = token
+            user.reset_password_token_created = timezone.now()
+            user.save()
+            reset_url = request.build_absolute_uri(
+                reverse('reset_password', kwargs={'token': token})
+            )
+            send_mail(
+                'Şifre Sıfırlama',
+                f'Şifrenizi sıfırlamak için aşağıdaki linke tıklayın: {reset_url}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+            messages.success(request, 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.')
+            if user.role == 'supplier':
+                return redirect('supplier_login')
+            else:
+                return redirect('customer_login')
+        except User.DoesNotExist:
+            messages.error(request, 'Bu e-posta adresi ile kayıtlı bir kullanıcı bulunamadı.')
+    return render(request, 'forgot_password.html')
+
+def reset_password(request, token):
+    try:
+        user = None
+        for u in User.objects.all():
+            if u.reset_password_token == token:
+                user = u
+                break
+        if not user:
+            messages.error(request, 'Geçersiz veya süresi dolmuş şifre sıfırlama bağlantısı.')
+            return redirect('customer_login')
+        if (timezone.now() - user.reset_password_token_created).total_seconds() > 86400:
+            messages.error(request, 'Şifre sıfırlama bağlantısının süresi dolmuş.')
+            if user.role == 'supplier':
+                return redirect('supplier_login')
+            else:
+                return redirect('customer_login')
+        if request.method == 'POST':
+            password = request.POST.get('new_password')
+            confirm_password = request.POST.get('confirm_password')
+            if password != confirm_password:
+                messages.error(request, 'Şifreler eşleşmiyor.')
+                return render(request, 'reset_password.html', {'token': token})
+            user.set_password(password)
+            user.reset_password_token = None
+            user.reset_password_token_created = None
+            user.save()
+            messages.success(request, 'Şifreniz başarıyla güncellendi.')
+            if user.role == 'supplier':
+                return redirect('supplier_login')
+            else:
+                return redirect('customer_login')
+        return render(request, 'reset_password.html', {'token': token})
+    except Exception as e:
+        messages.error(request, 'Bir hata oluştu.')
+        return redirect('customer_login')

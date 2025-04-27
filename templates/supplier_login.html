@@ -44,6 +44,10 @@
             text-align: center;
             margin-top: 20px;
         }
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +71,9 @@
                 <input type="password" name="password" placeholder="Şifre" required>
             </div>
             <button type="submit">Giriş Yap</button>
+            <div class="forgot-password">
+                <a href="{% url 'forgot_password' %}">Şifremi Unuttum</a>
+            </div>
         </form>
 
         <div class="role-switch">

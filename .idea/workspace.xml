@@ -6,13 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="1877f3a1-8806-4a1b-b806-860d26ef5e06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/cart.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/cart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customer_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customer_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/customer_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customer_login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/supplier_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/supplier_login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,6 +117,8 @@
       <workItem from="1745748001995" duration="3665000" />
       <workItem from="1745756085968" duration="2585000" />
       <workItem from="1745762084358" duration="1279000" />
+      <workItem from="1745772241849" duration="3078000" />
+      <workItem from="1745777263233" duration="852000" />
     </task>
     <servers />
   </component>

@@ -207,6 +207,7 @@
                     {% csrf_token %}
                     <input type="text" name="username" placeholder="Kullanıcı Adı" required>
                     <input type="password" name="password" placeholder="Şifre" required>
+                    <a href="{% url 'forgot_password' %}" style="color:#d32f2f; font-size:14px; text-align:right; display:block; margin-top:-10px; margin-bottom:6px;">Şifremi Unuttum</a>
                     <div class="remember-row">
                         <input type="checkbox" name="remember" id="remember">
                         <label for="remember">Beni Hatırla</label>
@@ -220,6 +221,7 @@
                     {% csrf_token %}
                     <input type="text" name="username" placeholder="Kullanıcı Adı" required>
                     <input type="password" name="password" placeholder="Şifre" required>
+                    <a href="{% url 'forgot_password' %}" style="color:#d32f2f; font-size:14px; text-align:right; display:block; margin-top:-10px; margin-bottom:6px;">Şifremi Unuttum</a>
                     <div class="remember-row">
                         <input type="checkbox" name="remember" id="remember_supplier">
                         <label for="remember_supplier">Beni Hatırla</label>
