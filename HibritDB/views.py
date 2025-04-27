@@ -309,14 +309,19 @@ def urun_ekle(request):
         if not name or not price:
             messages.error(request, "Tüm alanları doldurun.")
             return render(request, 'urun_ekle.html')
+        
+        product_model = Product()
         product_data = {
             'name': name,
             'price': float(price),
             'supplier_id': request.user.id
         }
-        collection = get_mongodb_collection('products')
-        result = collection.insert_one(product_data)
-        print("MongoDB Insert Result:", result.inserted_id)  # DEBUG
+        result = product_model.add_product(
+            name=name,
+            price=float(price),
+            supplier_id=request.user.id
+        )
+        print("MongoDB Insert Result:", result)  # DEBUG
         messages.success(request, "Ürün başarıyla eklendi!")
         return redirect('supplier_home')
     return render(request, 'urun_ekle.html')
