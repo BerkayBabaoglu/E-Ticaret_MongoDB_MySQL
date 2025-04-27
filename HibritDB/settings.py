@@ -27,7 +27,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT kimlik doğrulaması
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
@@ -79,9 +80,8 @@ DATABASES = {
 }
 
 # MongoDB settings
-MONGODB_DATABASE = 'hibritdb_mongodb'
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
+MONGODB_URI = 'mongodb://localhost:27017/'
+MONGODB_DB = 'hibritdb_mongodb'
 
 AUTH_USER_MODEL = 'HibritDB.User'
 

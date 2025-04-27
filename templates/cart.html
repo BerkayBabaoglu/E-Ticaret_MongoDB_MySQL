@@ -5,28 +5,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cart | E-COMMERCE WEBSITE BY EDYODA</title>
-
+    <title>Sepetim | E-COMMERCE WEBSITE</title>
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
     <link rel="icon" href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo" type="image/gif" sizes="16x16">
     <script src="https://kit.fontawesome.com/4a3b1f73a2.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <!-- HEADER -->
     {% include 'header.html' %}
 
     <!-- CART CONTAINER -->
     <div id="cartMainContainer">
-        <h1>Checkout</h1>
-        <h3 id="totalItem">Total Items: 0</h3>
-        <div id="cartContainer"></div>
+        <h1>Sepetim</h1>
+        <h3 id="totalItem">Toplam Ürün: {{ cart_items|length }}</h3>
+        <div id="cartContainer">
+            <div id="boxContainer">
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="box">
+                        <div class="product-info">
+                            <h3>{{ item.product_name }}</h3>
+                            <h4>Fiyat: {{ item.price }} TL</h4>
+                            <div class="quantity-controls">
+                                <button onclick="updateQuantity('{{ item.product_id|escapejs }}', '{{ item.quantity|add:'-1' }}')">-</button>
+                                <span>{{ item.quantity }}</span>
+                                <button onclick="updateQuantity('{{ item.product_id|escapejs }}', '{{ item.quantity|add:'1' }}')">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart('{{ item.product_id }}')">Kaldır</button>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-cart">Sepetiniz boş</p>
+                {% endif %}
+            </div>
+            <div id="totalContainer">
+                <div id="total">
+                    <h2>Toplam Tutar</h2>
+                    <h4>Toplam: {{ total }} TL</h4>
+                    <div id="button">
+                        <button onclick="placeOrder()">Siparişi Tamamla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- FOOTER -->
     {% include 'footer.html' %}
 
-    <script src="{% static 'js/cart.js' %}"></script>
+    <script>
+        function updateQuantity(productId, newQuantity) {
+            newQuantity = parseInt(newQuantity, 10);
+            if (newQuantity < 1) return;
+            fetch(`/api/cart/update/${productId}/`, {
+                method: 'PUT',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ quantity: newQuantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Hata: ' + data.error);
+                } else {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Miktar güncellenirken bir hata oluştu.');
+            });
+        }
+
+        function removeFromCart(productId) {
+            fetch(`/api/cart/remove/${productId}/`, {
+                method: 'DELETE',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Hata: ' + data.error);
+                } else {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ürün kaldırılırken bir hata oluştu.');
+            });
+        }
+
+        function placeOrder() {
+            // Implement order placement logic here
+            alert('Siparişiniz alındı!');
+        }
+    </script>
 </body>
 </html>

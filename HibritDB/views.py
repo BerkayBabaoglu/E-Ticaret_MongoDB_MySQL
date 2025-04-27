@@ -15,6 +15,9 @@ from django.contrib.auth import update_session_auth_hash
 
 from .permissions import IsCustomer, IsSupplier, IsAdmin
 from HibritDB.mongodb import get_mongodb_collection
+from HibritDB.mongodb_models import Cart, Product
+import json
+from bson import ObjectId
 
 def index(request):
     return render(request, 'index.html')
@@ -117,7 +120,18 @@ def customer_home(request):
     if request.user.role != 'customer':
         messages.error(request, "Bu sayfaya sadece müşteriler erişebilir.")
         return redirect('customer_login')
-    return render(request, 'customer_home.html')
+    
+    # MongoDB'den tüm ürünleri çek
+    product_model = Product()
+    products = product_model.get_all_products()
+    
+    # MongoDB ObjectId'leri string'e çevir
+    for product in products:
+        product['id'] = str(product['_id'])
+    
+    return render(request, 'customer_home.html', {
+        'products': products
+    })
 
 def supplier_home(request):
     if not request.user.is_authenticated:
@@ -150,7 +164,20 @@ def accessories(request):
     return render(request, 'accessories.html')
 
 def cart(request):
-    return render(request, 'cart.html')
+    if request.user.is_authenticated and request.user.role == 'customer':
+        cart = Cart()
+        cart_items = cart.get_cart_items(request.user.id)
+        total = cart.get_cart_total(request.user.id)
+        
+        # Debug için cart_items'ı kontrol et
+        print("Cart Items:", cart_items)
+        print("Total:", total)
+        
+        return render(request, 'cart.html', {
+            'cart_items': cart_items,
+            'total': total
+        })
+    return redirect('login')
 
 def about(request):
     return render(request, 'about.html')
@@ -284,3 +311,57 @@ def urun_ekle(request):
         messages.success(request, "Ürün başarıyla eklendi!")
         return redirect('supplier_home')
     return render(request, 'urun_ekle.html')
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsCustomer])
+def add_to_cart(request):
+    try:
+        data = request.data
+        cart = Cart()
+        cart.add_to_cart(
+            user_id=request.user.id,
+            product_id=data['product_id'],
+            product_name=data['product_name'],
+            price=float(data['price']),
+            quantity=data.get('quantity', 1)
+        )
+        return Response({'message': 'Ürün sepete eklendi'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsCustomer])
+def get_cart(request):
+    try:
+        cart = Cart()
+        cart_items = cart.get_cart_items(request.user.id)
+        total = cart.get_cart_total(request.user.id)
+        return Response({
+            'items': cart_items,
+            'total': total
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated, IsCustomer])
+def remove_from_cart(request, product_id):
+    try:
+        cart = Cart()
+        cart.remove_from_cart(request.user.id, product_id)
+        return Response({'message': 'Ürün sepetten kaldırıldı'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated, IsCustomer])
+def update_cart_item(request, product_id):
+    try:
+        data = json.loads(request.body)
+        cart = Cart()
+        cart.update_cart_item_quantity(request.user.id, product_id, data['quantity'])
+        return Response({'message': 'Sepet güncellendi'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+Cart().cart_collection.delete_many({"price": {"$type": "string"}})

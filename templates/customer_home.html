@@ -4,64 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Müşteri Paneli</title>
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <script src="https://kit.fontawesome.com/4a3b1f73a2.js" crossorigin="anonymous"></script>
+    <title>Müşteri Ana Sayfa</title>
+    <link rel="stylesheet" href="{% static 'css/customer_home.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Lato', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .messages {
-            margin-bottom: 20px;
-        }
-        .messages p {
-            padding: 10px;
-            border-radius: 4px;
-            margin: 5px 0;
-        }
-        .error {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        .success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        .minimal-home {
-            background: white;
-            padding: 40px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-            text-align: center;
-            margin-top: 40px;
-        }
-        .minimal-home h1 {
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .minimal-home p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-    </style>
 </head>
 <body>
     {% include 'header.html' %}
-    {% include 'slider.html' %}
-    {% include 'content.html' %}
+
+    <div class="container">
+        <h1>Ürünler</h1>
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    {% else %}
+                    <img src="{% static 'images/default-product.jpg' %}" alt="{{ product.name }}">
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">{{ product.price }} TL</p>
+                    {% if product.description %}
+                    <p class="description">{{ product.description }}</p>
+                    {% endif %}
+                    <button onclick="addToCart('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.price }}')" class="add-to-cart">
+                        Sepete Ekle
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-products">Henüz ürün bulunmamaktadır.</p>
+            {% endfor %}
+        </div>
+    </div>
+
     {% include 'footer.html' %}
 
-    
+    <script>
+        function addToCart(productId, productName, price) {
+            fetch('/api/cart/add/', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    product_name: productName,
+                    price: price
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Hata: ' + data.error);
+                } else {
+                    alert('Ürün sepete eklendi!');
+                    // Sepet sayısını güncelle
+                    updateCartCount();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ürün sepete eklenirken bir hata oluştu.');
+            });
+        }
 
+        function updateCartCount() {
+            // Sepet sayısını güncelle
+            const badge = document.getElementById('badge');
+            if (badge) {
+                const currentCount = parseInt(badge.textContent) || 0;
+                badge.textContent = currentCount + 1;
+            }
+        }
+    </script>
 </body>
 </html>

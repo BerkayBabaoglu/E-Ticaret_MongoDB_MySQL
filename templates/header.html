@@ -148,8 +148,8 @@
 </head>
 <body>
     <header>
-    <section>
-        <div id="container">
+    <section style="height: 64px; min-height: 56px; max-height: 72px; display: flex; align-items: center;">
+        <div id="container" style="height: 100%; display: flex; align-items: center;">
             <div id="shopName">
                 <a href="{% url 'home' %}"><b>SHOP</b>LANE</a>
             </div>
@@ -164,17 +164,15 @@
                 <input type="text" id="input" name="searchBox" placeholder="Search for Clothing and Accessories">
             </div>
 
-            <div id="user">
-                <a href="{% url 'cart' %}">
-                    <div style="position: relative; display: inline-block; vertical-align: middle;">
-                        <i class="fas fa-shopping-cart addedToCart"></i>
-                        <div id="badge">0</div>
-                    </div>
+            <div id="user" style="display: flex; align-items: center; gap: 28px;">
+                <a href="{% url 'cart' %}" style="display: flex; align-items: center; position: relative;">
+                    <i class="fas fa-shopping-cart addedToCart" style="font-size: 24px;"></i>
+                    <span id="badge" style="position: absolute; top: -7px; right: -10px; background: #ff4444; color: #fff; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; padding: 0 4px; line-height: 1; z-index: 2;">0</span>
                 </a>
                 {% if user.is_authenticated %}
-                    <div class="user-dropdown" style="display: inline-block; position: relative; vertical-align: middle;">
+                    <div class="user-dropdown" style="display: inline-block; position: relative; vertical-align: middle; margin-left: 12px;">
                         <button id="userDropdownToggle" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; font: inherit;">
-                            <i class="fas fa-user-circle userIcon"></i>
+                            <i class="fas fa-user-circle userIcon" style="font-size: 32px;"></i>
                             <span style="font-weight: bold; margin-left: 4px;">{{ user.username }}</span>
                         </button>
                         <div class="dropdown-content" style="display: none; position: absolute; right: 0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border-radius: 6px; min-width: 160px; z-index: 1001;">
@@ -183,8 +181,8 @@
                         </div>
                     </div>
                 {% else %}
-                    <a href="#" id="openAuthModal">
-                        <i class="fas fa-user-circle userIcon"></i>
+                    <a href="#" id="openAuthModal" style="margin-left: 12px;">
+                        <i class="fas fa-user-circle userIcon" style="font-size: 32px;"></i>
                     </a>
                 {% endif %}
             </div>
