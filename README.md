@@ -56,15 +56,15 @@ HibritDB/
 ├── db.sqlite3 # Veritabanı dosyası
 └── manage.py # Django yönetim komutları
 
-##Projenin Görselleri
+## Projenin Görselleri
 ![Ekran görüntüsü 2025-04-28 090540](https://github.com/user-attachments/assets/9f3291f7-b67e-4737-9145-179297e31d9a)
 ![Ekran görüntüsü 2025-04-28 090555](https://github.com/user-attachments/assets/59acef8b-877a-4826-8e38-ff8195ac29d8)
 ![Ekran görüntüsü 2025-04-28 090519](https://github.com/user-attachments/assets/ddafbcff-229a-4a79-8cca-57eaf7f60cbc)
 ![Ekran görüntüsü 2025-04-28 090647](https://github.com/user-attachments/assets/9145044e-9ebb-46c8-96d3-f39c9db87545)
 
-##Kullanılan Teknolojiler
+## Kullanılan Teknolojiler
 - Django
-- SQLite
+- MySQL
 - HTML/CSS
 - JavaScript
 
