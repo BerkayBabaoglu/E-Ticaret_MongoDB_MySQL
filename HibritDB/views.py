@@ -32,7 +32,7 @@ def index(request):
     return render(request, 'index.html')
 
 def signup(request):
-    if request.method == 'POST':
+    if request.method == 'POST': #sunucuya veri gondermek icin kullanilan bir HTTP istegi turu.
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -194,7 +194,7 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-@api_view(['POST'])
+@api_view(['POST']) #sadece post isteklerini kabul eden endpoint
 def obtain_token(request):
     serializer = TokenSerializer(data=request.data)
     if serializer.is_valid():

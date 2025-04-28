@@ -4,12 +4,12 @@ from django.conf import settings
 from datetime import datetime
 
 class Product:
-    def __init__(self):
+    def __init__(self): #constructor
         self.client = MongoClient(settings.MONGODB_URI)
         self.db = self.client[settings.MONGODB_DB]
-        self.product_collection = self.db['products']
-
-    def get_all_products(self):
+        self.product_collection = self.db['products'] #products koleksiyonunu seciyo, yani urunlerle ilgili butun islemleri bu koleksiyon uzerinden yapacak
+    #ObjectID stringe cevirdik cunku MongoDB'nin kendi id tipi JSON gonderip alirken hata cikiyo.
+    def get_all_products(self): #tum urunleri veritabanindan ceker
         products = list(self.product_collection.find())
         # MongoDB ObjectId'leri string'e çevir
         for product in products:
@@ -23,7 +23,7 @@ class Product:
             product['id'] = str(product['_id'])
         return products
 
-    def add_product(self, name, price, supplier_id, description=None, image_url=None):
+    def add_product(self, name, price, supplier_id, description=None, image_url=None): #yeni bir urun ekler
         product = {
             'name': name,
             'price': price,
@@ -36,7 +36,7 @@ class Product:
         product['id'] = str(result.inserted_id)
         return product
 
-    def get_product_by_id(self, product_id):
+    def get_product_by_id(self, product_id): #id'ye gore urunu bulur
         try:
             product = self.product_collection.find_one({'_id': ObjectId(product_id)})
             if product:
@@ -46,12 +46,12 @@ class Product:
             return None
 
 class Cart:
-    def __init__(self):
+    def __init__(self): #mongodbye baglaniyor.
         self.client = MongoClient(settings.MONGODB_URI)
         self.db = self.client[settings.MONGODB_DB]
         self.cart_collection = self.db['carts']
 
-    def add_to_cart(self, user_id, product_id, product_name, price, quantity=1):
+    def add_to_cart(self, user_id, product_id, product_name, price, quantity=1): #sepete urun ekler. urun varsa sadece adedi artirir.
         user_id = str(user_id)
         existing = self.cart_collection.find_one({'user_id': user_id, 'product_id': product_id})
         if existing:
@@ -69,7 +69,7 @@ class Cart:
             }
             self.cart_collection.insert_one(cart_item)
 
-    def get_cart_items(self, user_id):
+    def get_cart_items(self, user_id): #kullanicinin sepetindeki urunleri listeler
         try:
             # user_id'yi string'e çevir
             user_id = str(user_id)
@@ -82,23 +82,23 @@ class Cart:
             print(f"Error in get_cart_items: {str(e)}")
             return []
 
-    def remove_from_cart(self, user_id, product_id):
+    def remove_from_cart(self, user_id, product_id): #kaldir
         user_id = str(user_id)
         return self.cart_collection.delete_many({
             'user_id': user_id,
             'product_id': product_id
         })
 
-    def update_cart_item_quantity(self, user_id, product_id, quantity):
+    def update_cart_item_quantity(self, user_id, product_id, quantity): #sepetteki bir urunun miktarini gunceller.
         return self.cart_collection.update_one(
             {'user_id': user_id, 'product_id': product_id},
             {'$set': {'quantity': quantity}}
         )
 
-    def clear_cart(self, user_id):
+    def clear_cart(self, user_id): #kullanicinin tum sepetini temizler
         return self.cart_collection.delete_many({'user_id': user_id})
 
-    def get_cart_total(self, user_id):
+    def get_cart_total(self, user_id): #sepetteki urunlerin toplam fiyatibi hesaplar.
         try:
             # user_id'yi string'e çevir
             user_id = str(user_id)

@@ -6,7 +6,9 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 
-class RegisterSerializer(serializers.ModelSerializer):
+
+# kullanici olusturur ve veritabanina kaydeder.
+class RegisterSerializer(serializers.ModelSerializer): #
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
@@ -35,7 +37,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
     new_password2 = serializers.CharField(required=True)
 
-    def validate(self, attrs):
+    def validate(self, attrs): #gelen veririn dogru formatta oldugunu kontrol eder.
         if attrs['new_password'] != attrs['new_password2']:
             raise serializers.ValidationError("Yeni şifreler eşleşmiyor.")
         

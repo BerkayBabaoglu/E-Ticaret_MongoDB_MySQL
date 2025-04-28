@@ -1,19 +1,18 @@
-from pathlib import Path
-import os #os ile klasor yollarini yonetmek icin
-import pymysql
+from pathlib import Path #dosya ve klasor yollarini kolay yonetmek icin
+import os #os ile klasor yollarini yonetmek icin, isletim sistemi fonksiyonlarini yonetmek icin
+import pymysql #MySQL veritabani
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent #projenin ana dizinini (manage.py oldugu yeri) belirler.
 
-SECRET_KEY = 'django-insecure-i@f7rfy^!(*g18%^ab%z7b-ymebk(ph5u^-$i8x(3!crteje*&'
+SECRET_KEY = 'django-insecure-i@f7rfy^!(*g18%^ab%z7b-ymebk(ph5u^-$i8x(3!crteje*&' #Django'nun guvenlik anahatari
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
-INSTALLED_APPS = [
+# Application definition (
+INSTALLED_APPS = [ #djangonun yuklu uygulamalari
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -21,18 +20,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'HibritDB',
-    'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework', #api gelistirmek icin
+    'rest_framework_simplejwt', #token bazli (JWT) kimlij dogrulama icin
 ]
 
-REST_FRAMEWORK = {
+REST_FRAMEWORK = { #apilerde kullanici dogrulamada session ve JWT token sistemini kullanir.
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
-MIDDLEWARE = [
+MIDDLEWARE = [ #istek ve cevaplar arasındaki isleyen katmanlar
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -42,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'HibritDB.urls'
+ROOT_URLCONF = 'HibritDB.urls' #ana url ayarlarinin bulundugu dosya
 
 TEMPLATES = [
     {
@@ -68,18 +67,18 @@ WSGI_APPLICATION = 'HibritDB.wsgi.application'
 
 pymysql.install_as_MySQLdb()
 
-DATABASES = {
+DATABASES = { #mysql database bilgileri
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kullanici_sistemi',
+        'NAME': '',
         'USER': 'root',
-        'PASSWORD': 'Berkay01',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
 
-# MongoDB settings
+# MongoDB ayarlari
 MONGODB_URI = 'mongodb://localhost:27017/'
 MONGODB_DB = 'hibritdb_mongodb'
 
@@ -107,12 +106,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+#eposta ayarlari (smtp(gmail)) uzerinden epost agonderiyor
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'berkay.babaoglu.01@gmail.com'  
-EMAIL_HOST_PASSWORD = 'pydtetvbeovoyxea'  
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 
 LANGUAGE_CODE = 'en-us'
@@ -123,7 +124,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+#statik dosyalar (css,js) icin yol ayarlari
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [

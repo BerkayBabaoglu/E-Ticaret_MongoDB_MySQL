@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import views
-
+#http isteklerini uygun view fonksiyonlarina yonlendiren URL desenlerini icerir.
 urlpatterns = [
     path('admin/', admin.site.urls),
 

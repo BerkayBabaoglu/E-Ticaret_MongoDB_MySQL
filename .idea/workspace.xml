@@ -6,13 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="1877f3a1-8806-4a1b-b806-860d26ef5e06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/mongodb.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/mongodb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/mongodb_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/mongodb_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/permissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HibritDB/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HibritDB/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/HibritDB/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customer_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customer_login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/supplier_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/supplier_login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,10 +122,30 @@
       <workItem from="1745762084358" duration="1279000" />
       <workItem from="1745772241849" duration="3078000" />
       <workItem from="1745777263233" duration="852000" />
+      <workItem from="1745782767740" duration="407000" />
+      <workItem from="1745787574112" duration="4180000" />
+      <workItem from="1745820276053" duration="642000" />
+      <workItem from="1745821185200" duration="134000" />
+      <workItem from="1745821366076" duration="138000" />
+      <workItem from="1745827883652" duration="780000" />
+      <workItem from="1745830725746" duration="347000" />
+      <workItem from="1745842950997" duration="185000" />
+      <workItem from="1745865545735" duration="79000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
